@@ -16,7 +16,7 @@ export default function Home() {
           <span>👏 Olá, bem-vindo</span>
           <h1>Notícias sobre<br />o mundo <span>React</span>.</h1>
           <p>
-            Tenha acesso a todos as publicações<br />
+            Tenha acesso a todas publicações<br />
             <span>por R$ 1,99</span>
           </p>
           <SubscribeButton />
