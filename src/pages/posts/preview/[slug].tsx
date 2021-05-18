@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
@@ -58,10 +58,15 @@ export default function PostPreview({ post }: PostPreviewProps) {
     );
 }
 
-export const getStaticPaths = () => {
+// Utilizado para gerar os arquivos estáticos no momento do 'yarn build'
+// Isso é obrigatório em apenas páginas com nome do arquivo dinâmico, ex: [slug].tsx
+export const getStaticPaths: GetStaticPaths = async () => {
     return {
-        paths: [],
-        fallback: 'blocking',
+         paths: [], // Qdo vazio, irá gerar os arquivos estátivos no primero acesso
+        // paths: [
+        //     { params: { slug: 'react-hooks-como-utilizar-motivacoes-e-exemplos-praticos' }} // Qdo preenchido com o PARAM, irá gerar os arquivos estátivos build
+        // ],
+        fallback: 'blocking', // true: carrega o conteúdo antes das requisições; false: gera erro 404 qdo não estiver gerado o estático; blocking: só carrega o conteúdo depois das requisições (parecido com o SSR, mas gera o estático logo em seguida)
     };
 }
 
@@ -86,6 +91,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return {
         props: {
             post
-        }
+        },
+        revalidate: 60 * 30, // 30 minutes
     };
 }
